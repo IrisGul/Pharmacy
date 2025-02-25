@@ -1,0 +1,144 @@
+.container {
+    padding: 20px;
+    background: #333;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: auto;
+    color: white;
+}
+
+
+/* Flexbox für Buttons */
+
+.buttonContainer {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+
+/* Hinzufügen-Button (Grün) */
+
+.addButton {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.addButton:hover {
+    background-color: #218838;
+}
+
+
+/* Entfernen-Button (Rot) */
+
+.removeButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.removeButton:hover {
+    background-color: #c82333;
+}
+
+
+/* Tabelle mit Scroll-Funktion */
+
+.tableWrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+
+/* Tabellen-Design */
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+/* Kopfzeile der Tabelle */
+
+th {
+    background-color: #f4f4f4;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+    color: black;
+    /* Kopfzeilen-Text schwarz */
+}
+
+
+/* Tabellenzellen */
+
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: white;
+    /* Hintergrund für alle Zellen weiß */
+    color: black;
+    /* Schrift schwarz */
+}
+
+
+/* Spezifische Anpassung für neue Produkte */
+
+.newProduct td {
+    background-color: white !important;
+    color: black !important;
+}
+
+
+/* Interaktive Produkt-Buttons */
+
+.productButton {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+.productButton:hover {
+    color: #0056b3;
+}
+
+
+/* Schließen-Button */
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 50%;
+}
+
+.closeButton:hover {
+    background: darkred;
+}

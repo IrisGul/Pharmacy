@@ -1,0 +1,95 @@
+.profileContainer {
+    display: flex;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+
+/* Sidebar auf der linken Seite */
+
+.sidebar {
+    width: 250px;
+    background-color: #1f3b5c;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin: 5px 0;
+}
+
+
+/* Logout-Button */
+
+.logoutButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.logoutButton:hover {
+    background-color: #c82333;
+}
+
+
+/* Hauptinhalt */
+
+.profileContent {
+    flex-grow: 1;
+    padding: 20px;
+    text-align: left;
+}
+
+
+/* Willkommen-Text in Schwarz */
+
+.welcomeText {
+    color: black;
+}
+
+
+/* Rolle mit Link */
+
+.roleText {
+    font-size: 16px;
+}
+
+.dashboardLink {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.dashboardLink:hover {
+    color: darkblue;
+}
+
+
+/* Schließen-Button */
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 50%;
+}

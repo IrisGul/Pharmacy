@@ -1,0 +1,121 @@
+/* Container für die Rechnung */
+
+.bill-container {
+    padding: 20px;
+    background: #333;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: auto;
+    color: white;
+    text-align: center;
+}
+
+
+/* Tabellen-Styling */
+
+.sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.sales-table th,
+.sales-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.sales-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    color: black;
+}
+
+
+/* Tabellenzeilen Hover-Effekt */
+
+.sales-table tr {
+    cursor: pointer;
+}
+
+.sales-table tr:hover {
+    background-color: #ffebeb;
+}
+
+
+/* Modal-Hintergrund */
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Pop-up Dialog */
+
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+}
+
+
+/* Buttons */
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.yesButton {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.noButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.yesButton:hover {
+    background-color: #218838;
+}
+
+.noButton:hover {
+    background-color: #c82333;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 50%;
+}

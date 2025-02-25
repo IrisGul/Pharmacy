@@ -1,0 +1,24 @@
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .invoiceContainer,
+    .invoiceContainer * {
+        visibility: visible;
+    }
+    .invoiceContainer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white;
+        padding: 10px;
+    }
+    @media print {
+        .printButton,
+        .closeButton {
+            display: none !important;
+            /* Versteckt die Buttons beim Drucken */
+        }
+    }
+}
