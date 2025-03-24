@@ -4,11 +4,13 @@ import styles from "./ProductModal.module.css";
 interface Product {
   id: number;
   name: string;
+  description: string;
+  batchNumber: string;
+  expireDate: string;
+  manufacturer: string;
   category: string;
   price: number;
-  stock: number;
-  status: string;
-  date: string;
+ 
 }
 
 interface ProductModalProps {
@@ -24,7 +26,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onSave, onClose })
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: name === "price" || name === "stock" ? parseFloat(value) : value,
+      [name]: name === "price" || name === "stock" ? parseFloat(value) || 0 : value,
     });
   };
 
@@ -37,6 +39,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onSave, onClose })
       <div className={styles["modal-overlay"]} onClick={onClose}></div>
       <div className={styles.modal}>
         <h2>Product Details</h2>
+
         <label>
           Name:
           <input
@@ -47,6 +50,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onSave, onClose })
             className={styles.input}
           />
         </label>
+
         <label>
           Category:
           <input
@@ -57,6 +61,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onSave, onClose })
             className={styles.input}
           />
         </label>
+
         <label>
           Price (€):
           <input
@@ -67,38 +72,75 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onSave, onClose })
             className={styles.input}
           />
         </label>
+
         <label>
           Stock Quantity:
           <input
             type="number"
             name="stock"
-            value={formData.stock}
+          
             onChange={handleInputChange}
             className={styles.input}
           />
         </label>
+
         <label>
           Description:
+          <input
+            type="text"
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            className={styles.input}
+          />
+        </label>
+
+        <label>
+          Batch Number:
+          <input
+            type="text"
+            name="batchNumber"
+            value={formData.batchNumber}
+            onChange={handleInputChange}
+            className={styles.input}
+          />
+        </label>
+
+        <label>
+          Expire Date:
+          <input
+            type="text"
+            name="expireDate"
+            value={formData.expireDate}
+            onChange={handleInputChange}
+            className={styles.input}
+          />
+        </label>
+
+        <label>
+          Manufacturer:
+          <input
+            type="text"
+            name="manufacturer"
+            value={formData.manufacturer}
+            onChange={handleInputChange}
+            className={styles.input}
+          />
+        </label>
+
+        <label>
+          Status:
           <select
             name="status"
-            value={formData.status}
+            
             onChange={handleInputChange}
             className={styles.input}
           >
-            <option value="description">Description</option>
-           
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
           </select>
         </label>
-        <label>
-          Date:
-          <input
-            type="text"
-            name="date"
-            value={formData.date}
-            readOnly
-            className={styles.input}
-          />
-        </label>
+
         <div className={styles["button-container"]}>
           <button onClick={handleSave} className={styles["button-save"]}>
             Save

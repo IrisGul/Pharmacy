@@ -1,45 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ProductList.module.css";
 import ProductModal from "./ProductModal";
-import { useNavigate } from "react-router-dom"; // Navigation hinzufügen
+import { useNavigate } from "react-router-dom";
+import * as Papa from "papaparse";
+ // CSV Parser Library importieren
 
+// ✅ Neue Schnittstelle basierend auf deiner CSV-Datei
 interface Product {
   id: number;
   name: string;
+  description: string;
+  batchNumber: string;
+  expireDate: string;
+  manufacturer: string;
   category: string;
   price: number;
-  stock: number;
-  status: string;
-  date: string;
 }
 
-const initialProducts: Product[] = [
-  {
-    id: 1,
-    name: "Aspirin 500mg",
-    category: "Painkiller",
-    price: 4.99,
-    stock: 20,
-    status: "Active",
-    date: "01-01-2024",
-  },
-  {
-    id: 2,
-    name: "Ibuprofen 400mg",
-    category: "Anti-inflammatory",
-    price: 5.99,
-    stock: 15,
-    status: "Active",
-    date: "01-01-2024",
-  },
-];
-
 const ProductList: React.FC = () => {
-  const navigate = useNavigate(); // Navigation initialisieren
-  const [productList, setProductList] = useState<Product[]>(initialProducts);
+  const navigate = useNavigate();
+  const [productList, setProductList] = useState<Product[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [uploadStatus, setUploadStatus] = useState<string>("");
+
+  // ✅ CSV-Datei aus dem public-Ordner laden
+  useEffect(() => {
+    fetch("/product-list.csv") // Datei aus dem `public/`-Ordner laden
+      .then((response) => response.text())
+      .then((csvText) => {
+        Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (result) => {
+            if (!result.data.length) {
+              setUploadStatus("⚠️ Datei ist leer oder ungültig.");
+              return;
+            }
+
+            const products: Product[] = result.data.map((row: any, index: number) => ({
+              id: Number(row.ID) || index + 1,
+              name: row["Product Name"] || "Unbekanntes Produkt",
+              description: row.Description || "Keine Beschreibung",
+              batchNumber: row["Batch Number"] || "N/A",
+              expireDate: row["Expire Date"] || "N/A",
+              manufacturer: row.Manufacturer || "Unbekannter Hersteller",
+              category: row.Category || "Unbekannte Kategorie",
+              price: parseFloat(row.Price) || 0,
+            }));
+
+            setProductList(products);
+            setUploadStatus("✅ CSV-Datei erfolgreich geladen!");
+          },
+          error: (error: Error) => {
+            console.error("Fehler beim Parsen der CSV-Datei:", error);
+            setUploadStatus("❌ Fehler beim Laden der CSV-Datei.");
+          },
+          
+        });
+      })
+      .catch((error) => {
+        console.error("Fehler beim Abrufen der CSV-Datei:", error);
+        setUploadStatus("❌ Fehler beim Abrufen der CSV-Datei.");
+      });
+  }, []);
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
@@ -54,19 +79,6 @@ const ProductList: React.FC = () => {
     setShowModal(false);
   };
 
-  const handleAddProduct = () => {
-    const newProduct: Product = {
-      id: productList.length + 1,
-      name: "New Product",
-      category: "Category",
-      price: 0,
-      stock: 0,
-      status: "description",
-      date: new Date().toLocaleDateString(),
-    };
-    setProductList([...productList, newProduct]);
-  };
-
   const handleRemoveProducts = () => {
     if (selectedProducts.length > 0) {
       const updatedList = productList.filter(
@@ -75,16 +87,14 @@ const ProductList: React.FC = () => {
       setProductList(updatedList);
       setSelectedProducts([]);
     } else {
-      alert("Please select at least one product to remove!");
+      alert("Bitte mindestens ein Produkt auswählen!");
     }
   };
 
   const handleCheckboxChange = (id: number) => {
-    if (selectedProducts.includes(id)) {
-      setSelectedProducts(selectedProducts.filter((productId) => productId !== id));
-    } else {
-      setSelectedProducts([...selectedProducts, id]);
-    }
+    setSelectedProducts((prev) =>
+      prev.includes(id) ? prev.filter((productId) => productId !== id) : [...prev, id]
+    );
   };
 
   const handleCloseModal = () => {
@@ -101,29 +111,28 @@ const ProductList: React.FC = () => {
     <div className={styles.container}>
       <button className={styles.closeButton} onClick={handleClose}>X</button>
       <h1>Products</h1>
-      <div className={styles.buttonContainer}>
-        <button onClick={handleAddProduct} className={styles.addButton}>
-          Add New Product
-        </button>
-        <button
-          onClick={handleRemoveProducts}
-          className={styles.removeButton}
-          disabled={selectedProducts.length === 0}
-        >
-          Remove Product(s)
-        </button>
-      </div>
+
+      {/* Statusnachricht anzeigen */}
+      {uploadStatus && <p className={styles.uploadStatus}>{uploadStatus}</p>}
+
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
             <tr>
               <th>Select</th>
+              <th>ID</th>
               <th>Name</th>
+              <th>Description</th>
+              <th>Batch Number</th>
+              <th>Expire Date</th>
+              <th>Manufacturer</th>
+              <th>Category</th>
+              <th>Price</th>
             </tr>
           </thead>
           <tbody>
             {productList.map((product) => (
-              <tr key={product.id} className={product.name === "New Product" ? styles.newProduct : ""}>
+              <tr key={product.id}>
                 <td>
                   <input
                     type="checkbox"
@@ -131,14 +140,14 @@ const ProductList: React.FC = () => {
                     onChange={() => handleCheckboxChange(product.id)}
                   />
                 </td>
-                <td>
-                  <button
-                    className={styles.productButton}
-                    onClick={() => handleProductClick(product)}
-                  >
-                    {product.name}
-                  </button>
-                </td>
+                <td>{product.id}</td>
+                <td>{product.name}</td>
+                <td>{product.description}</td>
+                <td>{product.batchNumber}</td>
+                <td>{product.expireDate}</td>
+                <td>{product.manufacturer}</td>
+                <td>{product.category}</td>
+                <td>{product.price.toFixed(2)} €</td>
               </tr>
             ))}
           </tbody>

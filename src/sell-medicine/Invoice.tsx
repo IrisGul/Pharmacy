@@ -23,9 +23,10 @@ const Invoice: React.FC<InvoiceProps> = ({ billId, date, totalPaid, items, onClo
 
   return (
     <div className={styles.invoiceContainer}>
-      <h2>Leipziger Apotheke</h2>
-      <p>Leipziger Straße 43, 10117 Berlin</p>
-      <p>Telefon: 030/2043031</p>
+      <h2>Farmacia Luis Ilena</h2>
+      <p>La Sabana, Luperón 51000<p>
+      </p> Dominikanische Republik</p>
+      <p>Telefon: +18095718573 </p>
       <hr />
       <p><strong>Bill ID:</strong> {billId}</p>
       <p><strong>Date:</strong> {date}</p>

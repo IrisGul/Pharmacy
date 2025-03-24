@@ -19,7 +19,7 @@ const ViewBill: React.FC = () => {
     const fetchSales = async () => {
       try {
         const response = await fetch(
-          `https://localhost:7184/api/sales?date=${date}`  // dass von Tora 
+          `https://localhost:7184/api/sales?date=${date}` 
         );
         if (!response.ok) {
           throw new Error("Fehler beim Abrufen der Verkaufsdaten.");

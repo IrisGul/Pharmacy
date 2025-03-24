@@ -14,9 +14,49 @@ const RegisterPage: React.FC = () => {
     confirmPassword: "",
   });
 
+  const [passwordStrength, setPasswordStrength] = useState("");
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (name === "password") {
+      evaluatePasswordStrength(value);
+    }
+  };
+
+  const evaluatePasswordStrength = (password: string) => {
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const lengthValid = password.length >= 6;
+
+    const score = [hasUpper, hasLower, hasNumber, hasSpecial, lengthValid].filter(Boolean).length;
+
+    // Passwortstärke bewerten
+    if (score <= 2) {
+      setPasswordStrength("weak"); // Rot
+    } else if (score === 3 || score === 4) {
+      setPasswordStrength("medium"); // hellgrün
+    } else if (score === 5) {
+      setPasswordStrength("strong"); // Dunkelgrün
+    } else {
+      setPasswordStrength("");
+    }
+  };
+
+  const getStrengthColor = () => {
+    switch (passwordStrength) {
+      case "weak":
+        return "#FF6347"; // Rot
+      case "medium":
+        return "#90EE90"; // Hellgrün
+      case "strong":
+        return "#006400"; // Dunkelgrün
+      default:
+        return "";
+    }
   };
 
   const handleRegister = () => {
@@ -37,24 +77,35 @@ const RegisterPage: React.FC = () => {
       return;
     }
 
+    if (formData.password.length < 6) {
+      alert("Password must be at least 13 characters long!");
+      return;
+    }
+
+    if (
+      !/[A-Z]/.test(formData.password) ||
+      !/[a-z]/.test(formData.password) ||
+      !/[0-9]/.test(formData.password)
+      //*!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)
+    ) {
+      alert("Password must contain uppercase, lowercase, numbers!");
+      return;
+    }
+
     // **✅ Registrierungsdaten speichern**
     localStorage.setItem("userProfile", JSON.stringify(formData));
 
     alert("Registration successful!");
-
-    // **✅ Weiterleitung zur `Profile.tsx`**
     navigate("/profile");
   };
 
-
- // Schließen der Seite und zurück zu Dashboard 2
- const handleClose = () => {
-  navigate("/dashboard");
-};
+  const handleClose = () => {
+    navigate("/dashboard");
+  };
 
   return (
     <div className={styles.container}>
-       <button className={styles.closeButton} onClick={handleClose}>X</button>
+      <button className={styles.closeButton} onClick={handleClose}>X</button>
       <div className={styles.registerBox}>
         <h2>Register Account</h2>
         <div className={styles.formGroup}>
@@ -79,11 +130,25 @@ const RegisterPage: React.FC = () => {
         </div>
         <div className={styles.formGroup}>
           <label>Password</label>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} />
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            style={{ backgroundColor: getStrengthColor() }}
+          />
+          <small>
+            Must be at least 6 characters long, and include uppercase, lowercase and numbers.
+          </small>
         </div>
         <div className={styles.formGroup}>
           <label>Confirm Password</label>
-          <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
         </div>
         <button className={styles.registerButton} onClick={handleRegister}>
           Register
